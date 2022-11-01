@@ -1,4 +1,4 @@
 
-public class GroupInterface {
-    
+public interface GroupInterface {
+
 }
