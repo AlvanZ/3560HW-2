@@ -1,13 +1,14 @@
+
 import java.util.List;
 
-public class Users implements UserInterface {
+public class User implements UserInterface{
 
     private static int users;
     private String userID;
     private List<String> followers;
     private List<String> following;
 
-    public Users(String id){
+    public User(String id){
         userID = id;
         users++;
     }
