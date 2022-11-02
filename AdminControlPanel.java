@@ -1,65 +1,71 @@
 import java.awt.Color;
-import java.awt.event.ActionEvent;
 import javax.swing.*;
-public class AdminControlPanel{ //implement ActionEvent {
+import java.awt.FlowLayout;
+public class AdminControlPanel{ 
     private JFrame frame;
     private JLabel label;
     private JPanel treeViewPanel;
     private JPanel rightPanel;
-    private JButton userId;
-    private JButton addUser;
-    private JButton groupID;
-    private JButton addGroup;
-    private JButton openUserView;
-    private JButton showUserTotal;
-    private JButton showGroupTotal;
-    private JButton showMessagesTotal;
-    private JButton showPositivePercentage;
-
+    private UserIDButton userId;
+    private AddUserButton addUser;
+    private GroupIDButton groupID;
+    private AddGroupButton addGroup;
+    private OpenUserView openUserView;
+    private ShowUserTotalButton showUserTotal;
+    private ShowGroupTotal showGroupTotal;
+    private ShowMessagesTotal showMessagesTotal;
+    private ShowPositive showPositivePercentage;
     public AdminControlPanel(){
-        userId = new JButton();
-    addUser= new JButton();
-     groupID= new JButton();
-     addGroup= new JButton();
-      openUserView= new JButton();
-    showUserTotal= new JButton();
-    showGroupTotal= new JButton();
-     showMessagesTotal= new JButton();
-        showPositivePercentage= new JButton();
+        setupButtons();
         frame = new JFrame();
         frame.setTitle("MiniTwitter");
         frame.setSize(1000, 1000);
         frame.setVisible(true);
-        label = new JLabel();
         treeViewPanel = new JPanel();
         rightPanel = new JPanel();
-        treeViewPanel.setBounds(0,0,500, 1000);
+ 
         rightPanel.setBounds(500,0, 500, 1000);
-        treeViewPanel.setBackground(Color.red);
-        rightPanel.setBackground(Color.blue); 
         frame.add(treeViewPanel);
         frame.add(rightPanel);
-        frame.add(userId);
+        frame.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 10));
+        rightPanel.add(userId.getButton());
+        rightPanel.add(addUser.getButton());
+        rightPanel.add(groupID.getButton());
+        rightPanel.add(addGroup.getButton());
+        rightPanel.add(openUserView.getButton());
+        rightPanel.add(showUserTotal.getButton());
+        rightPanel.add(showGroupTotal.getButton());
+        rightPanel.add(showMessagesTotal.getButton());
+        rightPanel.add(showPositivePercentage.getButton());
+        
+
+
+       
     }
-    public void totalUser(){
+    public static void totalUser(){
         System.out.println(User.getUsers());
     }
-    public void totalGroups(){
+    public static void totalGroups(){
         System.out.println(UserGroup.getCount());
     }
-    public void totalTweets(){
+    public static void totalTweets(){
         System.out.println(User.getTweets());
     }
-    public void totalPositiveTweets(){
+    public static void totalPositiveTweets(){
         System.out.println((double)User.getPositiveTweets()/User.getTweets());
+    }
+    public void setupButtons(){
+        userId = new UserIDButton();
+        addUser= new AddUserButton();
+         groupID= new GroupIDButton();
+         addGroup= new AddGroupButton();
+          openUserView= new OpenUserView();
+        showUserTotal= new ShowUserTotalButton();
+        showGroupTotal= new ShowGroupTotal();
+         showMessagesTotal= new ShowMessagesTotal();
+            showPositivePercentage= new ShowPositive();
     }
 
     
-    // @Override
-    // public void actionPerformed(ActionEvent e) {
-    //     if(e.getSource()==userId){
-    //         System.out.println("Hi");
-    //     }
-        
-    // }
+  
 }
