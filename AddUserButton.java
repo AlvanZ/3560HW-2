@@ -18,7 +18,8 @@ public class AddUserButton extends JButton implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == button){
-            System.out.println("Test");
+            NewWindow window = new NewWindow();
+            window.addUser();
         }
         
     }

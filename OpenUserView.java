@@ -18,7 +18,8 @@ public class OpenUserView extends JButton implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == button){
-            UserView userView = new UserView();
+            NewWindow userView = new NewWindow();
+            userView.userView();
         }
         
     }

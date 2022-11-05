@@ -1,52 +1,55 @@
-import java.awt.Color;
+import java.awt.Dimension;
 import javax.swing.*;
 import java.awt.FlowLayout;
 public class AdminControlPanel{ 
+    private static AdminControlPanel admin = new AdminControlPanel();
+    private JSplitPane split;
+    private TreeView treeView;
     private JFrame frame;
     private JLabel label;
     private JPanel treeViewPanel;
     private JPanel rightPanel;
-    private UserIDButton userId;
+
     private AddUserButton addUser;
-    private GroupIDButton groupID;
     private AddGroupButton addGroup;
     private OpenUserView openUserView;
     private ShowUserTotalButton showUserTotal;
     private ShowGroupTotal showGroupTotal;
     private ShowMessagesTotal showMessagesTotal;
     private ShowPositive showPositivePercentage;
-    public AdminControlPanel(){
+    private AdminControlPanel(){
+        split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         setupButtons();
         frame = new JFrame();
         frame.setTitle("MiniTwitter");
         frame.setSize(1000, 1000);
-        frame.setVisible(true);
         treeViewPanel = new JPanel();
         rightPanel = new JPanel();
- 
-        rightPanel.setBounds(500,0, 500, 1000);
-        frame.add(treeViewPanel);
-        frame.add(rightPanel);
-        frame.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 10));
-        rightPanel.add(userId.getButton());
+        treeView = new TreeView();
         rightPanel.add(addUser.getButton());
-        rightPanel.add(groupID.getButton());
         rightPanel.add(addGroup.getButton());
         rightPanel.add(openUserView.getButton());
         rightPanel.add(showUserTotal.getButton());
         rightPanel.add(showGroupTotal.getButton());
         rightPanel.add(showMessagesTotal.getButton());
         rightPanel.add(showPositivePercentage.getButton());
-        
+        split.setLeftComponent(treeView.getTree());
+        split.setRightComponent(rightPanel);
+        frame.add(split);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-
-       
+        split.setOneTouchExpandable(true);
+        split.setDividerLocation(150);
+        frame.setVisible(true);
+    }
+    public static AdminControlPanel getInstance(){
+        return admin;
     }
     public static void totalUser(){
         System.out.println(User.getUsers());
     }
     public static void totalGroups(){
-        System.out.println(UserGroup.getCount());
+        System.out.println(Group.getCount());
     }
     public static void totalTweets(){
         System.out.println(User.getTweets());
@@ -55,9 +58,9 @@ public class AdminControlPanel{
         System.out.println((double)User.getPositiveTweets()/User.getTweets());
     }
     public void setupButtons(){
-        userId = new UserIDButton();
+  
         addUser= new AddUserButton();
-         groupID= new GroupIDButton();
+
          addGroup= new AddGroupButton();
           openUserView= new OpenUserView();
         showUserTotal= new ShowUserTotalButton();
@@ -66,6 +69,8 @@ public class AdminControlPanel{
             showPositivePercentage= new ShowPositive();
     }
 
-    
+    public TreeView getTree(){
+        return treeView;
+    }
   
 }
