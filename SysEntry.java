@@ -5,6 +5,9 @@ public abstract class  SysEntry {
         public String getDisplayName(){
             return "";
         }
+        public boolean isGroup(){
+            return false;
+        }
 
     }
 

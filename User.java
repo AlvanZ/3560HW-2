@@ -3,7 +3,7 @@ import java.util.*;
 
 
 public class User extends Subject implements Observer {
-    private static HashMap<User, String> map = new HashMap<>();
+    private static ArrayList<String> usersList = new ArrayList<>();
     private static int users;
     private String userID;
     private ArrayList<Observer> followers;
@@ -14,7 +14,7 @@ public class User extends Subject implements Observer {
     public User(String id){
         userID = id;
         users++;
-        map.put(this, id);
+        usersList.add(id);
     }
     public ArrayList<Observer> getFollowing(){
         return following;
@@ -61,7 +61,13 @@ public class User extends Subject implements Observer {
 
     }
     public void follow(Observer follow){
+        following.add(follow);
         follow.updateFollower(this);
     }
-
+    public boolean isGroup(){
+        return false;
+    }
+    public static boolean contains(String userID){
+        return usersList.contains(userID);
+    }
 }

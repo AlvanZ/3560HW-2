@@ -24,4 +24,7 @@ public class Group extends SysEntry  {
     public int accept(Visitor visitor){
         return visitor.visit(this);
     }
-}
+    public boolean isGroup(){
+        return true;
+    }
+}   
