@@ -23,15 +23,18 @@ public class NewWindow extends JFrame implements ActionListener{
     private JList<String> topTextArea;
     private JList<String> bottomTextArea;
     private DefaultMutableTreeNode node;
-    private SysEntry curr;
-    DefaultListModel<String> following;
-   public NewWindow(SysEntry user){
+    private DefaultListModel<String> newsFeed;
+    private User curr;
+    private DefaultListModel<String> following;
+   public NewWindow(User user){
+    //Sets up the whole big new window that user gets for the open user view
     curr = user;
+    curr.setWindow(this);
     topIndex = 0;
     bottomIndex = 0;
     treeView = AdminControlPanel.getInstance().getTree();
     frame = new JFrame();
-    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     frame.setSize(1000, 1000);
     frame.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
     textField = new JTextField();
@@ -67,7 +70,7 @@ public class NewWindow extends JFrame implements ActionListener{
     post.setFocusable(false);
     bottom.add(tweet);
     bottom.add(post);   
-    DefaultListModel<String> newsFeed = new DefaultListModel<>();
+    newsFeed = new DefaultListModel<>();
     newsFeed.add(0, "News Feed");
     bottomTextArea.setModel(newsFeed);
     sp2 = new JScrollPane(bottomTextArea);
@@ -77,22 +80,33 @@ public class NewWindow extends JFrame implements ActionListener{
     split.add(topPane);
     split.add(bottomPane);
     frame.add(split);
+    frame.setTitle(user.getDisplayName()+ " User Interface");
     frame.setVisible(true);
     }
    
     
     @Override
     public void actionPerformed(ActionEvent e) {
+        //Checks for waht button is hit
         if(e.getSource()==follow){
+            //Will follow the user and use the Observer Method
             DefaultListModel list = (DefaultListModel) topTextArea.getModel();
-            if(User.contains(textField.getText())&& !list.contains(textField.getText())){
+            if(!textField.getText().equals(curr.getDisplayName()) && User.contains(textField.getText())&& !list.contains(textField.getText())){
                     following.addElement(textField.getText());
                     topTextArea.setModel(following);
-
-
+                    curr.follow((Observer)treeView.findUser(textField.getText()));
             }
+        }
+        if(e.getSource()==post){
+            //Has theuser post the tweet and go through the observer classes 
+            curr.post(tweet.getText());
         }
         
     }
-    
+    public void receive(String str){
+        //This is the second half of the tweet method where the user would receive the tweet and it would update the bottom window
+        newsFeed.addElement(str);
+        bottomTextArea.setModel(newsFeed);
+    }
+
 }

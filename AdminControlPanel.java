@@ -20,6 +20,7 @@ public class AdminControlPanel implements ActionListener{
     private JButton showGroupTotal;
     private JButton showMessagesTotal;
     private JButton showPositivePercentage;
+    private JOptionPane popUp;
     private AdminControlPanel(){
         setup();
     }
@@ -40,6 +41,7 @@ public class AdminControlPanel implements ActionListener{
     }
     public void setup(){
         //Initialize all the buttons, frames and panes
+        popUp = new JOptionPane();
         frame = new JFrame();
         addUser= new JButton();
          addGroup= new JButton();
@@ -69,10 +71,10 @@ public class AdminControlPanel implements ActionListener{
             addGroup.setFocusable(false);
             addGroup.addActionListener(this);
             addGroup.setBounds(0,0, 100, 50);
-            openUserView.setText("Open User View");
             openUserView.setFocusable(false);
             openUserView.addActionListener(this);
             openUserView.setBounds(0,0, 100, 50);
+            openUserView.setText("Open User View");
            showUserTotal.setText("Show User Total");
             showUserTotal.setFocusable(false);
             showUserTotal.addActionListener(this);
@@ -89,10 +91,12 @@ public class AdminControlPanel implements ActionListener{
            showPositivePercentage.setFocusable(false);
            showPositivePercentage.addActionListener(this);
            showPositivePercentage.setBounds(0,0, 100, 50);
+           //Setup Title and size
             frame.setTitle("MiniTwitter");
             frame.setSize(1000, 1000);
             userID.setPreferredSize(new Dimension(150, 50));
             groupID.setPreferredSize(new Dimension(150, 50));
+            //Setting up split panels to have the GUI properly set up
             split2.setLeftComponent(userID);
             split2.setRightComponent(addUser);
             split3.setLeftComponent(groupID);
@@ -112,6 +116,7 @@ public class AdminControlPanel implements ActionListener{
             split.setRightComponent(rightPanel);
             frame.add(split);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            //Finishing touches for splitpane
             split.setOneTouchExpandable(true);
             split.setDividerLocation(150);
             frame.setVisible(true);
@@ -120,21 +125,49 @@ public class AdminControlPanel implements ActionListener{
 
 
     public TreeView getTree(){
+        //returns the tree for NewWindow to use
         return treeView;
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-       if(e.getSource()==addUser){
+        //sets up buttons for action
+       if(e.getSource()==addUser ){
+        //Adds user into treeView if it doesn't exist or is not empty string
+            if(userID.getText() != null && !userID.getText().trim().equals("")){
             SysEntry user = new User(userID.getText());
             treeView.addSysEntry(user);
+            }
        }
-       else if(e.getSource()==addGroup){
+         else if(e.getSource()==addGroup){
+              //Adds Group into treeView if it doesn't exist or is not empty string
+        if(groupID.getText()!= null &&!groupID.getText().trim().equals("")){
         SysEntry group = new Group(groupID.getText());
         treeView.addSysEntry(group);
         }
+        }
         else if(e.getSource()==openUserView){
+            //Opens userView with the method passed to TreeView
             treeView.openUser();
         }
+        else if(e.getSource()==showUserTotal){
+            //Pops up the userTotal
+            int total =treeView.getTotalUsers();
+            JOptionPane.showMessageDialog(null, "There is " + total + " number of Users", "Number of Groups", JOptionPane.PLAIN_MESSAGE);
+        }
+        else if(e.getSource()==showGroupTotal){
+            //pops up total groups
+            int total =treeView.getTotalGroups();
+           JOptionPane.showMessageDialog(null, "There is " + total + " number of groups", "Number of Groups", JOptionPane.PLAIN_MESSAGE);
+        }
+        else if(e.getSource() == showMessagesTotal){
+            //pops up total messages
+            JOptionPane.showMessageDialog(null, "There is " + User.getTweets() + " number of tweets", "Number of Groups", JOptionPane.PLAIN_MESSAGE);
+        }
+        else if(e.getSource() == showPositivePercentage){
+            //pops up how many of the tweets are positive which just includes the keywords good and nice
+            JOptionPane.showMessageDialog(null, "There is " + User.getPositiveTweets() + "% number of tweets were positive", "Number of Groups", JOptionPane.PLAIN_MESSAGE);
+        }
+    
     }
   
 }

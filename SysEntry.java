@@ -1,4 +1,4 @@
-public abstract class  SysEntry {
+public abstract class SysEntry {
         public boolean addSysEntry(SysEntry newEntry){
             throw new SecurityException ("Cannot do this");
         }
@@ -6,6 +6,9 @@ public abstract class  SysEntry {
             return "";
         }
         public boolean isGroup(){
+            return false;
+        }  
+        public boolean isUser(){
             return false;
         }
 

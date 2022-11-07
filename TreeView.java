@@ -1,13 +1,12 @@
-import java.util.Enumeration;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import java.util.*;
 public class TreeView {
+    //Instance Variables
     private HashMap<String, SysEntry> users;
     private HashMap<String, SysEntry> groups;
     private ArrayList<String> groupsID;
@@ -16,6 +15,7 @@ public class TreeView {
     private JTree tree;
     private DefaultMutableTreeNode curr;
     private DefaultMutableTreeNode root;
+    //Constructor
     public TreeView(){
         groupsID = new ArrayList<>();
         usersID = new ArrayList<>();
@@ -33,17 +33,10 @@ public class TreeView {
             }
         });
     }
- public void addSysEntry(SysEntry component){
+    //Adding SysEntry into the tree with factors like if it's group or not, and the node user clicked on
+     public void addSysEntry(SysEntry component){
     if(!usersID.contains(component.getDisplayName()) && !groupsID.contains(component.getDisplayName())){
-        if(component.isGroup() && groupsID.contains(curr.toString()) && curr != null){
-                  groups.put(component.getDisplayName(), component);
-            groupsID.add(component.getDisplayName());
-            DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
-            root = (DefaultMutableTreeNode)model.getRoot();
-            curr.add(new DefaultMutableTreeNode(component.getDisplayName()));
-            model.reload();
-        }
-        else if(component.isGroup() && curr==null || curr==root){
+         if(component.isGroup() && (curr==null || curr==root)){
             groups.put(component.getDisplayName(), component);
             groupsID.add(component.getDisplayName());
             DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
@@ -51,7 +44,15 @@ public class TreeView {
             root.add(new DefaultMutableTreeNode(component.getDisplayName()));
             model.reload();
         }
-        else if (!component.isGroup() && curr == null || curr==root){
+        else if(component.isGroup() && groupsID.contains(curr.toString()) && curr != null){
+            groups.put(component.getDisplayName(), component);
+         groupsID.add(component.getDisplayName());
+        DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
+        root = (DefaultMutableTreeNode)model.getRoot();
+         curr.add(new DefaultMutableTreeNode(component.getDisplayName()));
+         model.reload();
+        }
+        if (component.isUser() && (curr == null || curr==root)){
             users.put(component.getDisplayName(), component);
             usersID.add(component.getDisplayName());
             DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
@@ -59,7 +60,7 @@ public class TreeView {
             root.add(new DefaultMutableTreeNode(component.getDisplayName()));
             model.reload();
         }
-        else if (!component.isGroup() && groupsID.contains(curr.toString())){
+        else if (component.isUser() && groupsID.contains(curr.toString())){
             users.put(component.getDisplayName(), component);
             usersID.add(component.getDisplayName());
             DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
@@ -69,6 +70,7 @@ public class TreeView {
         }
     }
  }
+    //Return tree reference
    public JTree getTree(){
     return tree;
    }
@@ -80,9 +82,36 @@ public class TreeView {
         }
         return (DefaultMutableTreeNode)(tp.getLastPathComponent());
    }
+   //Opens User Interface
    public void openUser(){
     if(temp!=null && users.get(temp)!= null){
-        NewWindow window = new NewWindow(users.get(temp));
+        NewWindow window = new NewWindow((User)users.get(temp));
     }
+   }
+   //Find the User within the tree
+   public User findUser(String str){
+    return (User)users.get(str);
+   }
+   //Count number of Users
+   public int getTotalUsers(){
+    SysEntryVisitor visit = new SysEntryVisitor();
+    int total = 0;
+    for(int i =0; i<usersID.size(); i++){
+        User temp = (User)users.get(usersID.get(i));
+        total += temp.accept(visit);
+    }
+    return total;
+
+   }
+   //Return the total amount of groups in tree
+   public int getTotalGroups(){
+    SysEntryVisitor visit = new SysEntryVisitor();
+    int total = 0;
+    for(int i =0; i<groupsID.size(); i++){
+        Group temp = (Group)groups.get(groupsID.get(i));
+        total += temp.accept(visit);
+    }
+    return total;
+
    }
 }
