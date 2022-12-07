@@ -4,8 +4,10 @@ public class Group extends SysEntry  {
     private static int group;
     private String name;
     private static int count;
+    private long time;
 
     public Group(String name){
+    time = System.currentTimeMillis();
     this.name = name;
     list = new ArrayList<SysEntry>();
     count++;

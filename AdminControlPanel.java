@@ -20,7 +20,9 @@ public class AdminControlPanel implements ActionListener{
     private JButton showGroupTotal;
     private JButton showMessagesTotal;
     private JButton showPositivePercentage;
+    private JButton last;
     private JOptionPane popUp;
+    private JButton valid;
     private AdminControlPanel(){
         setup();
     }
@@ -41,6 +43,8 @@ public class AdminControlPanel implements ActionListener{
     }
     public void setup(){
         //Initialize all the buttons, frames and panes
+        last = new JButton();
+        valid = new JButton();
         popUp = new JOptionPane();
         frame = new JFrame();
         addUser= new JButton();
@@ -91,6 +95,12 @@ public class AdminControlPanel implements ActionListener{
            showPositivePercentage.setFocusable(false);
            showPositivePercentage.addActionListener(this);
            showPositivePercentage.setBounds(0,0, 100, 50);
+           valid.addActionListener(this);
+           valid.setBounds(0,0, 100, 50);
+          valid.setText("Valid");
+         last.addActionListener(this);
+          last.setBounds(0,0, 100, 50);
+         last.setText("Last Updated User");
            //Setup Title and size
             frame.setTitle("MiniTwitter");
             frame.setSize(1000, 1000);
@@ -109,6 +119,8 @@ public class AdminControlPanel implements ActionListener{
             bottom.add(showGroupTotal);
             bottom.add(showMessagesTotal);
             bottom.add(showPositivePercentage);
+            bottom.add(valid);
+            bottom.add(last);
             rightPanel.add(split5);
             split5.add(top);
             split5.add(bottom);
@@ -166,6 +178,12 @@ public class AdminControlPanel implements ActionListener{
         else if(e.getSource() == showPositivePercentage){
             //pops up how many of the tweets are positive which just includes the keywords good and nice
             JOptionPane.showMessageDialog(null, "There is " + User.getPositiveTweets() + "% number of tweets were positive", "Number of Groups", JOptionPane.PLAIN_MESSAGE);
+        }
+        else if (e.getSource() == valid){
+            JOptionPane.showMessageDialog(null, "Valid: " + treeView.getValid(), "Number of Groups", JOptionPane.PLAIN_MESSAGE);
+        }
+        else if (e.getSource() == last){
+            JOptionPane.showMessageDialog(null, "Last Updated User: " + treeView.lastUpdatedUser(), "Number of Groups", JOptionPane.PLAIN_MESSAGE);
         }
     
     }

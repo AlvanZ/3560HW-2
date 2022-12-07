@@ -3,6 +3,7 @@ import java.util.*;
 
 
 public class User extends SysEntry implements Observer, Observable, Visitable{
+    private long time;
     private static ArrayList<String> usersList = new ArrayList<>();
     private static int users;
     private String userID;
@@ -13,6 +14,7 @@ public class User extends SysEntry implements Observer, Observable, Visitable{
     private NewWindow window;
     //Constructor
     public User(String id){
+        time = System.currentTimeMillis();
         userID = id;
         users++;
         usersList.add(id);
@@ -37,6 +39,7 @@ public class User extends SysEntry implements Observer, Observable, Visitable{
     //Receive the message
     public void receive(String str){
         window.receive( str);
+        time = System.currentTimeMillis();
     }
     //Set window for User
     public void setWindow(NewWindow window){
@@ -44,6 +47,7 @@ public class User extends SysEntry implements Observer, Observable, Visitable{
     }
     //Post/Tweet method 
     public void post(String tweet){
+        time = System.currentTimeMillis();
         for(int i =0; i<followers.size(); i++){
             followers.get(i).receive(this.getDisplayName()+ ": "+ tweet);
         }
@@ -92,4 +96,8 @@ public class User extends SysEntry implements Observer, Observable, Visitable{
     public static boolean contains(String userID){
         return usersList.contains(userID);
     }
+    public long getTime(){
+        return time;
+    }
+
 }

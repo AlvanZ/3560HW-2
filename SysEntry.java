@@ -10,6 +10,9 @@ public abstract class SysEntry {
         }  
         public boolean isUser(){
             return false;
+        }  
+        public long getTime(){
+            return 0;
         }
 
     }

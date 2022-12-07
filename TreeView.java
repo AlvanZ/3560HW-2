@@ -15,8 +15,10 @@ public class TreeView {
     private JTree tree;
     private DefaultMutableTreeNode curr;
     private DefaultMutableTreeNode root;
+    private boolean valid;
     //Constructor
     public TreeView(){
+        valid = true;
         groupsID = new ArrayList<>();
         usersID = new ArrayList<>();
         users = new HashMap<>();
@@ -113,5 +115,27 @@ public class TreeView {
     }
     return total;
 
+   }
+   public boolean getValid(){
+    for(int i =0; i<usersID.size(); i++){
+        if(usersID.get(i).contains(" ")){
+            return false;
+        }
+    }
+    for(int i =0; i<groupsID.size(); i++){
+        if(groupsID.get(i).contains(" ")){
+            return false;
+        }
+    }
+    return valid;
+   }
+   public String lastUpdatedUser(){
+    String res = usersID.get(0);
+    for(int i =1; i<usersID.size(); i++){
+        if(users.get(res).getTime() < users.get(usersID.get(i)).getTime()){
+            res = users.get(usersID.get(i)).getDisplayName();
+        }
+    }
+    return res;
    }
 }

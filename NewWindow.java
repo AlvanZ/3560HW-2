@@ -80,7 +80,7 @@ public class NewWindow extends JFrame implements ActionListener{
     split.add(topPane);
     split.add(bottomPane);
     frame.add(split);
-    frame.setTitle(user.getDisplayName()+ " User Interface");
+    frame.setTitle(user.getDisplayName()+ " User Interface | Time Created: "+user.getTime());
     frame.setVisible(true);
     }
    
@@ -100,6 +100,7 @@ public class NewWindow extends JFrame implements ActionListener{
         if(e.getSource()==post){
             //Has theuser post the tweet and go through the observer classes 
             curr.post(tweet.getText());
+            frame.setTitle(curr.getDisplayName()+ " User Interface | Time Created: "+curr.getTime());
         }
         
     }
@@ -107,6 +108,7 @@ public class NewWindow extends JFrame implements ActionListener{
         //This is the second half of the tweet method where the user would receive the tweet and it would update the bottom window
         newsFeed.addElement(str);
         bottomTextArea.setModel(newsFeed);
+        frame.setTitle(curr.getDisplayName()+ " User Interface | Time Created: "+curr.getTime());
     }
 
 }
